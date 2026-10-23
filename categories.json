@@ -1,0 +1,92 @@
+{
+  "happy": {
+    "id": "happy",
+    "name": "Happy",
+    "key": "H",
+    "icon": "😄",
+    "isMeme": false,
+    "isFixed": true,
+    "sounds": [
+      "sounds/happy/Voicy__I_am_joking.mp3",
+      "sounds/happy/Voicy_Abhi_Maja_ayega_na_Bhidu.mp3",
+      "sounds/happy/Voicy_Are_kehna_kya_chahte_ho.mp3",
+      "sounds/happy/Voicy_Bruh.mp3",
+      "sounds/happy/Voicy_emotional_damage.mp3",
+      "sounds/happy/Voicy_Epic_Squirtle_playing_the_Sax.mp3",
+      "sounds/happy/Voicy_Galaxy_Brain_Meme.mp3",
+      "sounds/happy/Voicy_Golmaal_he_bhai_sab_golmaal_hai.mp3",
+      "sounds/happy/Voicy_Gotilo.mp3",
+      "sounds/happy/Voicy_Ha_ha_ha_ha.mp3",
+      "sounds/happy/Voicy_He_Prabhu.mp3",
+      "sounds/happy/Voicy_khatam_goodbye.mp3",
+      "sounds/happy/Voicy_Laugh.mp3",
+      "sounds/happy/Voicy_Mamma_mia.mp3",
+      "sounds/happy/Voicy_Moye_More.mp3",
+      "sounds/happy/Voicy_OMG_WOW.mp3",
+      "sounds/happy/Voicy_Wah_sab_ji_wah.mp3",
+      "sounds/happy/Voicy_wow.mp3"
+    ]
+  },
+  "laugh": {
+    "id": "laugh",
+    "name": "Laugh",
+    "key": "L",
+    "icon": "😂",
+    "isMeme": false,
+    "isFixed": true,
+    "sounds": [
+      "sounds/laugh/_Kaisa_Laga_Mera_Majak_Ringtone__by_Fringster.com_.mp3"
+    ]
+  },
+  "crying": {
+    "id": "crying",
+    "name": "Crying",
+    "key": "C",
+    "icon": "😭",
+    "isMeme": false,
+    "isFixed": true,
+    "sounds": []
+  },
+  "angry": {
+    "id": "angry",
+    "name": "Angry",
+    "key": "A",
+    "icon": "😡",
+    "isMeme": false,
+    "isFixed": true,
+    "sounds": []
+  },
+  "ssad_1787313282593": {
+    "id": "ssad_1787313282593",
+    "name": "ssad",
+    "key": "Q",
+    "icon": "💔",
+    "isMeme": true,
+    "isFixed": false,
+    "sounds": [
+      "sounds/memes/tf_nemesis.mp3"
+    ]
+  },
+  "faaaaaah_1787314671191": {
+    "id": "faaaaaah_1787314671191",
+    "name": "faaaaaah",
+    "key": "F",
+    "icon": "📢",
+    "isMeme": true,
+    "isFixed": false,
+    "sounds": [
+      "sounds/memes/fahhhhhhhhhhhhhh.mp3"
+    ]
+  },
+  "cmd_sir_1787387926273": {
+    "id": "cmd_sir_1787387926273",
+    "name": "CMD SIR",
+    "key": "0",
+    "icon": "📢",
+    "isMeme": true,
+    "isFixed": false,
+    "sounds": [
+      "sounds/memes/Azeem_O_Shaan_Shahenshah.mp3"
+    ]
+  }
+}

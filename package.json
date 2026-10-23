@@ -1,0 +1,17 @@
+{
+  "name": "soundboard-studio",
+  "version": "3.0.0",
+  "description": "Studio Soundboard - Tactile Audio Sampler & Meme Console",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "generate-sounds": "node generate_sounds.js"
+  },
+  "keywords": [
+    "soundboard",
+    "audio",
+    "memes"
+  ],
+  "author": "",
+  "license": "ISC"
+}

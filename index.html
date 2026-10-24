@@ -1,260 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soundboard - Classic Studio Sampler & Meme Board</title>
-    <meta name="description" content="A classic studio tactile Soundboard web app loaded with 30+ meme sound effects, analog hardware aesthetics, keyboard shortcuts, and dark studio UI.">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Soundboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <div class="studio-rack" id="studioRack">
-        <!-- Classic Studio Header -->
-        <header class="app-header">
-            <div class="header-brand">
-                <div class="brand-logo">
-                    <span class="logo-icon">🎛️</span>
-                    <div class="studio-led active-green" id="studioLed"></div>
-                </div>
-                <div class="brand-text">
-                    <!-- <h1>STUDIO SOUNDBOARD <span class="badge-classic">PRO MK-II</span></h1> -->
-                    <h1>STUDIO SOUNDBOARD <span class="badge-classic">PRO MK-II</span></h1>
-                    <p class="subtitle">Classic Hardware Tactile Audio Sampler & Meme Console</p>
-                </div>
-            </div>
-
-            <!-- Header Action Controls -->
-            <div class="header-actions">
-                <button id="addCategoryBtn" class="btn btn-primary btn-tactile">
-                    <span class="btn-icon">➕</span> Add Sound / Meme
-                </button>
-                <button id="exportBtn" class="btn btn-secondary btn-tactile" title="Export categories as JSON configuration">
-                    <span class="btn-icon">📤</span> Export
-                </button>
-                <button id="importBtn" class="btn btn-secondary btn-tactile" title="Import JSON configuration file">
-                    <span class="btn-icon">📥</span> Import
-                </button>
-                <input type="file" id="importFileInput" accept=".json" style="display: none;">
-                
-                <!-- Lock / Unlock Toggle Button -->
-                <button id="lockToggleBtn" class="btn btn-secondary btn-tactile lock-btn" title="Lock Console (Playback Only)">
-                    <span id="lockIcon" class="btn-icon">🔓</span> <span id="lockText">Unlocked</span>
-                </button>
-            </div>
-        </header>
-
-        <!-- Control Strip & Filter Tabs -->
-        <div class="toolbar">
-            <!-- Category Tabs -->
-            <div class="category-tabs" id="categoryTabs">
-                <button class="tab-btn active" data-tab="all">✨ ALL PADS (<span id="countAll">34</span>)</button>
-                <button class="tab-btn" data-tab="memes">🎭 MEMES (<span id="countMemes">30</span>)</button>
-                <button class="tab-btn" data-tab="classics">🔊 CLASSICS (<span id="countClassics">4</span>)</button>
-            </div>
-
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="Search pad name or hotkey..." autocomplete="off">
-            </div>
-
-            <div class="shortcut-tip">
-                <span class="tip-badge">HOTKEYS</span> Press [A-Z] or [0-9]
-            </div>
-        </div>
-
-        <!-- Main Categories Sound Grid -->
-        <main class="main-content">
-            <div id="categoriesGrid" class="categories-grid">
-                <!-- Dynamically populated sound cards -->
-            </div>
-            
-            <div id="emptyState" class="empty-state hidden">
-                <div class="empty-icon">🔇</div>
-                <h3>No sound pads found</h3>
-                <p>Click "Add Sound / Meme" or adjust your search filter.</p>
-            </div>
-        </main>
-
-        <!-- Bottom Analog Audio Console Footer -->
-        <footer class="audio-control-bar">
-            <!-- Currently Playing Display -->
-            <div class="now-playing-container">
-                <div class="analog-screen" id="playingIndicator">
-                    <div class="screen-header">
-                        <span class="screen-label">STATUS MONITOR</span>
-                        <div class="screen-leds">
-                            <span class="led red"></span>
-                            <span class="led yellow"></span>
-                            <span class="led green active"></span>
-                        </div>
-                    </div>
-                    <div class="screen-body">
-                        <span class="sound-wave">
-                            <span></span><span></span><span></span><span></span>
-                        </span>
-                        <span class="now-playing-text" id="nowPlayingText">▶ SYSTEM READY</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Master Fader Volume Control -->
-            <div class="volume-control">
-                <button id="muteBtn" class="btn-icon-only btn-tactile" title="Toggle Mute (M)">
-                    <span id="muteIcon">🔊</span>
-                </button>
-                <div class="fader-wrapper">
-                    <input type="range" id="volumeSlider" class="volume-slider fader-knob" min="0" max="100" value="80" step="1">
-                    <div class="fader-scale">
-                        <span>MIN</span>
-                        <span>50%</span>
-                        <span>MAX</span>
-                    </div>
-                </div>
-                <span id="volumeValue" class="volume-value">80%</span>
-            </div>
-
-            <!-- Stop All Button -->
-            <div class="playback-controls">
-                <button id="stopBtn" class="btn btn-danger stop-btn btn-tactile">
-                    <span class="btn-icon">⏹</span> MUTE ALL PADS
-                </button>
-            </div>
-        </footer>
+  <header class="topbar">
+    <div class="now">
+      <span class="dot"></span>
+      <span id="nowPlaying">Kuch play nahi ho raha</span>
     </div>
+    <button id="stopBtn" class="btn stop" type="button">⏹ Stop</button>
+  </header>
 
-    <!-- Add / Edit Modal -->
-    <div id="modalBackdrop" class="modal-backdrop hidden">
-        <div id="categoryModal" class="modal-card hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-            <div class="modal-header">
-                <h2 id="modalTitle">Add Sound / Meme Pad</h2>
-                <button id="closeModalBtn" class="close-btn">&times;</button>
-            </div>
+  <main>
+    <section id="foldersSection" hidden>
+      <h2>Folders <small>(random sound)</small></h2>
+      <div id="folders" class="grid"></div>
+    </section>
 
-            <form id="categoryForm" class="modal-body">
-                <input type="hidden" id="editCategoryId" value="">
+    <section id="looseSection" hidden>
+      <h2>Sounds</h2>
+      <div id="loose" class="grid"></div>
+    </section>
 
-                <!-- Section Mode Selector -->
-                <div class="form-group">
-                    <label>Action Mode</label>
-                    <div class="radio-group">
-                        <label class="radio-chip">
-                            <input type="radio" name="modalMode" value="meme" id="modeMeme" checked>
-                            <span>🎭 Add New Meme Pad</span>
-                        </label>
-                        <label class="radio-chip">
-                            <input type="radio" name="modalMode" value="classic" id="modeClassic">
-                            <span>🔊 Add Sound to Classic</span>
-                        </label>
-                    </div>
-                </div>
+    <p id="empty" class="empty" hidden>sounds/ folder me koi audio file nahi mili.</p>
+  </main>
 
-                <!-- Classic Category Selection Dropdown (Only shown when modeClassic is selected) -->
-                <div class="form-group hidden" id="classicSelectGroup">
-                    <label for="classicCategorySelect">Choose Fixed Classic Category</label>
-                    <select id="classicCategorySelect" class="form-control">
-                        <option value="happy">😄 Happy [ Key: H ]</option>
-                        <option value="laugh">😂 Laugh [ Key: L ]</option>
-                        <option value="crying">😭 Crying [ Key: C ]</option>
-                        <option value="angry">😡 Angry [ Key: A ]</option>
-                    </select>
-                </div>
-
-                <!-- Meme Specific Fields (Name, Icon, Key) -->
-                <div id="memeFieldsGroup">
-                    <!-- Meme Name -->
-                    <div class="form-group">
-                        <label for="catName">Meme Name</label>
-                        <input type="text" id="catName" class="form-control" placeholder="e.g. Bruh, Vine Boom, Airhorn" autocomplete="off">
-                    </div>
-
-                    <div class="form-row">
-                        <!-- Icon / Emoji -->
-                        <div class="form-group flex-1">
-                            <label for="catIcon">Emoji Icon</label>
-                            <div class="emoji-input-wrapper">
-                                <input type="text" id="catIcon" class="form-control" placeholder="🗿" maxlength="4" autocomplete="off">
-                                <div class="preset-emojis">
-                                    <button type="button" class="emoji-chip">🗿</button>
-                                    <button type="button" class="emoji-chip">💥</button>
-                                    <button type="button" class="emoji-chip">📢</button>
-                                    <button type="button" class="emoji-chip">💀</button>
-                                    <button type="button" class="emoji-chip">💔</button>
-                                    <button type="button" class="emoji-chip">💨</button>
-                                    <button type="button" class="emoji-chip">🛸</button>
-                                    <button type="button" class="emoji-chip">🎺</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Keyboard Shortcut -->
-                        <div class="form-group flex-1">
-                            <label for="catKey">Assign Hotkey Button</label>
-                            <div class="key-input-wrapper">
-                                <input type="text" id="catKey" class="form-control key-picker" placeholder="Key (e.g. B)" maxlength="1" autocomplete="off">
-                                <span class="key-badge-preview" id="keyBadgePreview">?</span>
-                            </div>
-                            <small class="form-hint">Must be a unique key [A-Z] or [0-9]</small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sound File Paths / Uploads -->
-                <div class="form-group">
-                    <label>Audio Samples</label>
-                    
-                    <!-- File Upload Input -->
-                    <div class="file-drop-zone" id="dropZone">
-                        <input type="file" id="audioFileInput" accept="audio/*" multiple style="display: none;">
-                        <span class="upload-icon">📼</span>
-                        <p>Click or drop audio samples here</p>
-                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('audioFileInput').click()">Browse Samples</button>
-                    </div>
-
-                    <!-- Audio File List Container -->
-                    <div id="soundList" class="sound-list-container">
-                        <!-- Sound items populated here -->
-                    </div>
-
-                    <!-- Manual URL / Path Adder -->
-                    <div class="url-add-row">
-                        <input type="text" id="manualUrlInput" class="form-control" placeholder="File path / URL (e.g. sounds/memes/bruh.wav)">
-                        <button type="button" id="addUrlBtn" class="btn btn-secondary">Add Sample</button>
-                    </div>
-                </div>
-
-                <!-- Modal Actions -->
-                <div class="modal-footer">
-                    <button type="button" id="cancelModalBtn" class="btn btn-ghost">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Sound</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Confirm Delete Modal -->
-    <div id="deleteModalBackdrop" class="modal-backdrop hidden">
-        <div class="modal-card modal-sm" role="dialog">
-            <div class="modal-header">
-                <h2>Delete Sound Pad</h2>
-            </div>
-            <div class="modal-body">
-                <p id="deleteConfirmText">Are you sure you want to remove this sound pad?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="cancelDeleteBtn" class="btn btn-ghost">Cancel</button>
-                <button type="button" id="confirmDeleteBtn" class="btn btn-danger">Delete Pad</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div id="toast" class="toast hidden"></div>
-
-    <script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

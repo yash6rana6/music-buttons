@@ -44,6 +44,30 @@ function saveCategoriesToFile(data) {
     }
 }
 
+const AUDIO_EXTS = ['.mp3', '.wav', '.ogg', '.m4a', '.flac'];
+const isAudio = (name) => AUDIO_EXTS.includes(path.extname(name).toLowerCase());
+
+// Scan sounds/ : sub-folders -> {name, files[]}, loose files -> {name, path}
+function scanSounds() {
+    const root = path.join(PUBLIC_DIR, 'sounds');
+    const result = { folders: [], loose: [] };
+    if (!fs.existsSync(root)) return result;
+    const entries = fs.readdirSync(root, { withFileTypes: true })
+        .sort((a, b) => a.name.localeCompare(b.name));
+    for (const e of entries) {
+        if (e.isDirectory()) {
+            const files = fs.readdirSync(path.join(root, e.name))
+                .filter(isAudio)
+                .sort((a, b) => a.localeCompare(b))
+                .map(f => `sounds/${e.name}/${f}`);
+            if (files.length) result.folders.push({ name: e.name, files });
+        } else if (isAudio(e.name)) {
+            result.loose.push({ name: e.name, path: `sounds/${e.name}` });
+        }
+    }
+    return result;
+}
+
 const server = http.createServer((req, res) => {
     // Enable CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -57,6 +81,13 @@ const server = http.createServer((req, res) => {
     }
 
     const reqUrl = req.url.split('?')[0];
+
+    // GET /api/sounds (auto-scan sounds folder)
+    if (req.method === 'GET' && reqUrl === '/api/sounds') {
+        res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+        res.end(JSON.stringify(scanSounds()));
+        return;
+    }
 
     // GET /api/categories
     if (req.method === 'GET' && reqUrl === '/api/categories') {
@@ -164,10 +195,18 @@ const server = http.createServer((req, res) => {
 
     // Static File Server
     let fileReqUrl = req.url.split('?')[0];
+    try { fileReqUrl = decodeURIComponent(fileReqUrl); } catch (e) { /* keep raw */ }
     if (fileReqUrl === '/') fileReqUrl = '/index.html';
 
     const safePath = path.normalize(fileReqUrl).replace(/^(\.\.[\/\\])+/, '');
     const filePath = path.join(PUBLIC_DIR, safePath);
+
+    // block path traversal + dotfiles (.env, .git)
+    if (!filePath.startsWith(PUBLIC_DIR) || safePath.split(/[\/\\]/).some(seg => seg.startsWith('.'))) {
+        res.writeHead(404, { 'Content-Type': 'text/html' });
+        res.end('<h1>404 Not Found</h1>');
+        return;
+    }
 
     const ext = path.extname(filePath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
